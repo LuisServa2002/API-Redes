@@ -1,0 +1,45 @@
+SCRIPTS
+-------------------------------------------------------------------------
+1) GET: Obtiene el ID del primer libro.
+
+pm.test("Código de estado es 200", function () {
+    pm.response.to.have.status(200);
+});
+
+pm.test("La respuesta es un array", function () {
+    let data = pm.response.json();
+    pm.expect(data).to.be.an("array");
+});
+
+if (pm.response.json().length > 0) {
+    let primerLibro = pm.response.json()[0];
+    pm.environment.set("book_id", primerLibro.id);
+}
+
+2) POST : Obtiene el ID del último libro agregado.
+let libro = pm.response.json();
+
+pm.test("Libro creado con éxito", function () {
+    pm.response.to.have.status(200); // o 201 si así responde tu API
+    pm.expect(libro).to.have.property("id");
+});
+
+pm.environment.set("book_id", libro.id);
+
+3) PATCH : Verifica si la actualización es de "anio" y guarda el ID del último libro.
+let libro = pm.response.json();
+
+pm.test("Libro creado con éxito", function () {
+    pm.response.to.have.status(200); // o 201 si así responde tu API
+    pm.expect(libro).to.have.property("id");
+});
+
+pm.environment.set("book_id", libro.id);
+
+4) DELETE: Verifica que el último libro se elimino y también borra su ID de "book_id".
+
+pm.test("Libro eliminado correctamente", function () {
+    pm.response.to.have.status(200); // o 204 dependiendo de tu API
+});
+
+pm.environment.unset("book_id");
